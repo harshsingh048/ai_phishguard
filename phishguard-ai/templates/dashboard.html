@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PhishGuard AI — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/main.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="grid-overlay"></div>
+<div class="scan-lines"></div>
+
+<nav class="navbar">
+  <div class="nav-brand">
+    <span class="shield-icon">🛡️</span>
+    <span class="brand-text">PHISH<span class="accent">GUARD</span></span>
+    <span class="brand-ai">AI</span>
+  </div>
+  <div class="nav-links">
+    <a href="/" class="nav-link">Scanner</a>
+    <a href="/dashboard" class="nav-link active">Dashboard</a>
+    <a href="/login" class="nav-link" id="loginLink">Login</a>
+    <a href="#" class="nav-link hidden" id="logoutLink" onclick="logout()">Logout</a>
+  </div>
+</nav>
+
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1 class="dashboard-title">
+      <span class="gradient-text">Threat Intelligence</span> Dashboard
+    </h1>
+    <p class="dashboard-sub">Real-time scan statistics and threat analysis</p>
+    <button class="refresh-btn" onclick="loadDashboard()">↻ Refresh</button>
+  </div>
+
+  <!-- STAT CARDS -->
+  <div class="stats-grid">
+    <div class="stat-card total">
+      <div class="stat-icon">📊</div>
+      <div class="stat-value" id="totalScans">—</div>
+      <div class="stat-label">Total Scans</div>
+    </div>
+    <div class="stat-card dangerous">
+      <div class="stat-icon">🚨</div>
+      <div class="stat-value" id="dangerousCount">—</div>
+      <div class="stat-label">Dangerous <span id="dangerousPct" class="stat-pct"></span></div>
+    </div>
+    <div class="stat-card suspicious">
+      <div class="stat-icon">⚠️</div>
+      <div class="stat-value" id="suspiciousCount">—</div>
+      <div class="stat-label">Suspicious <span id="suspiciousPct" class="stat-pct"></span></div>
+    </div>
+    <div class="stat-card safe">
+      <div class="stat-icon">✅</div>
+      <div class="stat-value" id="safeCount">—</div>
+      <div class="stat-label">Safe <span id="safePct" class="stat-pct"></span></div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW -->
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3 class="card-title"><span>📈</span> Scan Activity (7 Days)</h3>
+      <canvas id="trendChart" height="200"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3 class="card-title"><span>🥧</span> Threat Distribution</h3>
+      <canvas id="distChart" height="200"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3 class="card-title"><span>🔗</span> Input Types</h3>
+      <canvas id="typeChart" height="200"></canvas>
+    </div>
+  </div>
+
+  <!-- LIVE ATTACK MAP & RECENT SCANS -->
+  <div class="lower-grid">
+    <div class="chart-card attack-map-card">
+      <h3 class="card-title"><span>🌍</span> Live Threat Activity</h3>
+      <div class="attack-map" id="attackMap">
+        <div class="map-loading">Loading threat data...</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3 class="card-title"><span>🕒</span> Recent Scans</h3>
+      <div class="recent-scans-list" id="recentScansList">
+        <div class="loading-state">Loading...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/dashboard.js"></script>
+</body>
+</html>

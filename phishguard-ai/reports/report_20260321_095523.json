@@ -1,0 +1,164 @@
+{
+  "report_type": "PhishGuard AI Scan Report",
+  "generated_at": "2026-03-21T09:55:23.204072",
+  "version": "1.0",
+  "scan_summary": {
+    "input": "https://teri_mai_ka_chodo/.com",
+    "input_type": "url",
+    "risk_score": 5,
+    "classification": "Safe",
+    "scan_mode": "deep",
+    "response_time_ms": 1269.3
+  },
+  "threat_analysis": {
+    "triggered_rules": [
+      "Domain does not resolve to any IP"
+    ],
+    "explanation": "Detected issues: Domain does not resolve to any IP ML model confidence: 45% confident in Safe classification.",
+    "ml_scores": {
+      "bert_score": null,
+      "ml_available": true,
+      "ml_score": 0,
+      "rule_score": 0
+    }
+  },
+  "recommendations": [
+    {
+      "action": "Content appears safe",
+      "icon": "\u2705",
+      "priority": "info"
+    },
+    {
+      "action": "Always stay vigilant online",
+      "icon": "\ud83d\udca1",
+      "priority": "info"
+    }
+  ],
+  "domain_intelligence": {
+    "dns": {
+      "domain": "teri_mai_ka_chodo",
+      "ip": null,
+      "resolves": false
+    },
+    "threat_feed": {
+      "error": "Working outside of application context.\n\nThis typically means that you attempted to use functionality that needed\nthe current application. To solve this, set up an application context\nwith app.app_context(). See the documentation for more information.",
+      "found": false
+    },
+    "whitelist": {
+      "domain": "teri_mai_ka_chodo",
+      "whitelisted": false
+    },
+    "whois": {
+      "available": false,
+      "domain": "teri_mai_ka_chodo",
+      "domain_age_days": null,
+      "is_new_domain": null,
+      "reason": "Whois command returned no output"
+    }
+  },
+  "raw_result": {
+    "classification": {
+      "color": "green",
+      "css_class": "safe",
+      "description": "This content appears to be safe.",
+      "emoji": "\u2705",
+      "label": "Safe"
+    },
+    "domain_info": {
+      "dns": {
+        "domain": "teri_mai_ka_chodo",
+        "ip": null,
+        "resolves": false
+      },
+      "threat_feed": {
+        "error": "Working outside of application context.\n\nThis typically means that you attempted to use functionality that needed\nthe current application. To solve this, set up an application context\nwith app.app_context(). See the documentation for more information.",
+        "found": false
+      },
+      "whitelist": {
+        "domain": "teri_mai_ka_chodo",
+        "whitelisted": false
+      },
+      "whois": {
+        "available": false,
+        "domain": "teri_mai_ka_chodo",
+        "domain_age_days": null,
+        "is_new_domain": null,
+        "reason": "Whois command returned no output"
+      }
+    },
+    "explanation": "Detected issues: Domain does not resolve to any IP ML model confidence: 45% confident in Safe classification.",
+    "from_cache": false,
+    "input": "https://teri_mai_ka_chodo/.com",
+    "input_type": "url",
+    "ml_scores": {
+      "bert_score": null,
+      "ml_available": true,
+      "ml_score": 0,
+      "rule_score": 0
+    },
+    "mode": "deep",
+    "response_time_ms": 1269.3,
+    "risk_score": 5,
+    "suggestions": [
+      {
+        "action": "Content appears safe",
+        "icon": "\u2705",
+        "priority": "info"
+      },
+      {
+        "action": "Always stay vigilant online",
+        "icon": "\ud83d\udca1",
+        "priority": "info"
+      }
+    ],
+    "timestamp": "2026-03-21T09:54:05.263663",
+    "top_features": [
+      {
+        "feature": "suspicious_keyword_count",
+        "importance": 0.96,
+        "value": 0
+      },
+      {
+        "feature": "is_https",
+        "importance": 0.038,
+        "value": 1
+      },
+      {
+        "feature": "num_dots",
+        "importance": 0.001,
+        "value": 1
+      },
+      {
+        "feature": "domain_length",
+        "importance": 0,
+        "value": 17
+      },
+      {
+        "feature": "suspicious_tld",
+        "importance": 0,
+        "value": 0
+      }
+    ],
+    "triggered_rules": [
+      "Domain does not resolve to any IP"
+    ],
+    "url_highlights": {
+      "domain": {
+        "risk": "low",
+        "text": "teri_mai_ka_chodo"
+      },
+      "path": {
+        "risk": "low",
+        "text": "/.com"
+      },
+      "query": {
+        "risk": "low",
+        "text": ""
+      },
+      "scheme": {
+        "risk": "low",
+        "text": "https://"
+      }
+    }
+  }
+}

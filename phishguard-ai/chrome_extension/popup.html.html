@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PhishGuard AI</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 340px; min-height: 400px;
+    background: #030810; color: #e2f0ff;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+  }
+  .header {
+    background: #0a1628; border-bottom: 1px solid #1a3a5c;
+    padding: 14px 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .header h1 { font-size: 16px; font-weight: 800; letter-spacing: 1px; }
+  .header h1 span { color: #00d4ff; }
+  .ai-badge {
+    background: #00d4ff; color: #030810;
+    font-size: 9px; font-weight: 900;
+    padding: 2px 5px; border-radius: 3px; letter-spacing: 1px;
+  }
+  .current-url {
+    padding: 12px 16px;
+    background: #070f1c; border-bottom: 1px solid #1a3a5c;
+  }
+  .url-label { font-size: 10px; color: #3a5a7c; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .url-text { font-size: 12px; color: #7a9cc4; font-family: monospace; word-break: break-all; max-height: 40px; overflow: hidden; }
+  .scan-section { padding: 14px 16px; }
+  .scan-btn {
+    width: 100%; padding: 12px;
+    background: linear-gradient(135deg, #0090d9, #00d4ff);
+    border: none; border-radius: 8px;
+    color: #030810; font-size: 13px; font-weight: 800;
+    letter-spacing: 1px; cursor: pointer; transition: all 0.2s;
+  }
+  .scan-btn:hover { transform: translateY(-1px); }
+  .scan-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .result-section { padding: 0 16px 16px; display: none; }
+  .risk-display {
+    background: #0a1628; border-radius: 10px;
+    padding: 16px; border: 1px solid #1a3a5c;
+  }
+  .risk-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .risk-badge { font-size: 16px; font-weight: 800; }
+  .risk-badge.safe { color: #00ff88; }
+  .risk-badge.suspicious { color: #ffd60a; }
+  .risk-badge.dangerous { color: #ff3358; }
+  .risk-number { font-family: monospace; font-size: 32px; font-weight: 700; }
+  .risk-bar { height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; margin-bottom: 10px; }
+  .risk-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
+  .risk-fill.safe { background: linear-gradient(90deg, #00ff8840, #00ff88); }
+  .risk-fill.suspicious { background: linear-gradient(90deg, #ffd60a40, #ffd60a); }
+  .risk-fill.dangerous { background: linear-gradient(90deg, #ff335840, #ff3358); }
+  .rules { margin-top: 10px; max-height: 80px; overflow-y: auto; }
+  .rule { font-size: 11px; color: #7a9cc4; padding: 3px 0; border-bottom: 1px solid #1a3a5c1a; }
+  .rule::before { content: '⚡ '; }
+  .actions { display: flex; gap: 8px; margin-top: 10px; }
+  .action-btn {
+    flex: 1; padding: 8px; font-size: 11px; font-weight: 600;
+    border-radius: 6px; cursor: pointer; border: none;
+    transition: all 0.2s;
+  }
+  .action-btn.block { background: rgba(255,51,88,0.15); color: #ff3358; border: 1px solid rgba(255,51,88,0.3); }
+  .action-btn.open { background: rgba(0,212,255,0.1); color: #00d4ff; border: 1px solid rgba(0,212,255,0.25); }
+  .loading { text-align: center; padding: 20px; color: #3a5a7c; font-size: 12px; }
+  .auto-scan-toggle { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-top: 1px solid #1a3a5c; }
+  .toggle-label { font-size: 12px; color: #7a9cc4; }
+  .toggle { position: relative; display: inline-block; width: 40px; height: 20px; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .slider {
+    position: absolute; cursor: pointer; inset: 0;
+    background: #1a3a5c; border-radius: 20px; transition: 0.3s;
+  }
+  .slider:before {
+    content: ""; position: absolute;
+    height: 14px; width: 14px;
+    left: 3px; bottom: 3px;
+    background: #7a9cc4; border-radius: 50%; transition: 0.3s;
+  }
+  input:checked + .slider { background: #00d4ff30; }
+  input:checked + .slider:before { transform: translateX(20px); background: #00d4ff; }
+  .view-full-btn {
+    display: block; text-align: center; padding: 10px;
+    background: rgba(0,212,255,0.05); border-top: 1px solid #1a3a5c;
+    color: #00d4ff; text-decoration: none; font-size: 12px; font-weight: 600;
+  }
+  .view-full-btn:hover { background: rgba(0,212,255,0.1); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span style="font-size:20px">🛡️</span>
+  <h1>PHISH<span>GUARD</span></h1>
+  <span class="ai-badge">AI</span>
+</div>
+
+<div class="current-url">
+  <div class="url-label">Current Page</div>
+  <div class="url-text" id="currentUrl">Loading...</div>
+</div>
+
+<div class="scan-section">
+  <button class="scan-btn" id="scanBtn" onclick="scanCurrentPage()">
+    🔍 SCAN THIS PAGE
+  </button>
+</div>
+
+<div class="result-section" id="resultSection">
+  <div class="risk-display">
+    <div class="risk-top">
+      <span class="risk-badge" id="riskBadge">Unknown</span>
+      <span class="risk-number" id="riskNum">0</span>
+    </div>
+    <div class="risk-bar"><div class="risk-fill" id="riskFill"></div></div>
+    <div class="rules" id="rulesList"></div>
+    <div class="actions" id="actionBtns"></div>
+  </div>
+</div>
+
+<div id="loadingSection" class="loading" style="display:none">
+  <div>⏳ Scanning with AI...</div>
+</div>
+
+<div class="auto-scan-toggle">
+  <span class="toggle-label">Auto-scan URLs</span>
+  <label class="toggle">
+    <input type="checkbox" id="autoScanToggle" onchange="toggleAutoScan()">
+    <span class="slider"></span>
+  </label>
+</div>
+
+<a href="http://localhost:5000" target="_blank" class="view-full-btn">
+  Open Full Scanner →
+</a>
+
+<script src="popup.js"></script>
+</body>
+</html>
